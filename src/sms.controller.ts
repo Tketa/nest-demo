@@ -4,11 +4,12 @@ import { SmsMessage } from './sms.entity';
 import { BasicAuthStrategy } from './basic.guard';
 
 @Controller('sms')
-export class AppController {
+export class SmsController {
   private messages: SmsMessage[];
   constructor() {
     this.messages = [];
   }
+
   @Get('list')
   @Render('list')
   @UseGuards(BasicAuthStrategy)
