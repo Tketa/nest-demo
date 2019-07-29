@@ -8,7 +8,6 @@ export class PricingService {
 
     async getCost(phoneNumber: string): Promise<number> {
         const response = await this.httpClient.get(`${NEXMO_BASE_URL}/prices?number=${phoneNumber}`).toPromise();
-        console.log('response', response);
         return response.data;
     }
 

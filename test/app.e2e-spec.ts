@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { SmsModule } from '../src/sms.module';
 import { INestApplication } from '@nestjs/common';
 
-describe('AppController (e2e)', () => {
+describe('SmsController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -15,10 +15,14 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  it('gets the total amount saved', () => {
+    const messages = new Array(10).map(() => ({ from: 'Birdie', to: '+447427287918', text: 'Hello World!'}));
+    messages.forEach(async (message) => {
+      await request(app.getHttpServer())
+        .post('/sms/json')
+        .send(message);
+    });
+
+    const 
   });
 });

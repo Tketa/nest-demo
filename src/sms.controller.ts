@@ -7,20 +7,27 @@ import { PricingService } from './pricing.service';
 @Controller('sms')
 export class SmsController {
   private messages: SmsMessage[];
-  
+
   constructor(private readonly pricingService: PricingService) {
     this.messages = [];
+  }
+
+  @Get('cost')
+  async getCost() {
+    const aggregatedCost = await this.pricingService.getAggregateCost(this.messages.map(message => message.to));
+
+    return aggregatedCost.toFixed(2);
   }
 
   @Get('list')
   @Render('list')
   @UseGuards(BasicAuthStrategy)
   async list() {
-    const amountSaved = await this.pricingService.getAggregateCost(this.messages.map(message => message.to));
+    const aggregatedCost = await this.getCost();
 
     return {
       messages: this.messages,
-      amountSaved: amountSaved.toFixed(2),
+      aggregatedCost,
     };
   }
 
