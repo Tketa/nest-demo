@@ -1,13 +1,27 @@
-import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Render, Get } from '@nestjs/common';
 import { SmsDto } from './sms.dto';
+import { SmsMessage } from './sms.entity';
 
 @Controller()
 export class AppController {
+  private messages: SmsMessage[];
+  constructor() {
+    this.messages = [];
+  }
+  @Get('/sms/list')
+  @Render('list')
+  async list() {
+    return {
+      messages: this.messages,
+    };
+  }
+
   @Post('/sms/json')
   sendSms(
     @Body(ValidationPipe) smsDto: SmsDto,
   ): string {
-    console.log('Received request to send SMS', smsDto);
+    const { from, to, text } = smsDto;
+    this.messages.push(new SmsMessage(from, to, text));
     return 'Thanks!';
   }
 }
