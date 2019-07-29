@@ -1,22 +1,24 @@
-import { Controller, Post, Body, ValidationPipe, Render, Get } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Render, Get, UseGuards } from '@nestjs/common';
 import { SmsDto } from './sms.dto';
 import { SmsMessage } from './sms.entity';
+import { BasicAuthStrategy } from './basic.guard';
 
-@Controller()
+@Controller('sms')
 export class AppController {
   private messages: SmsMessage[];
   constructor() {
     this.messages = [];
   }
-  @Get('/sms/list')
+  @Get('list')
   @Render('list')
+  @UseGuards(BasicAuthStrategy)
   async list() {
     return {
       messages: this.messages,
     };
   }
 
-  @Post('/sms/json')
+  @Post('json')
   sendSms(
     @Body(ValidationPipe) smsDto: SmsDto,
   ): string {
