@@ -1,11 +1,11 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
 import { SmsDto } from './sms.dto';
 
 @Controller()
 export class AppController {
   @Post('/sms/json')
   sendSms(
-    @Body() smsDto: SmsDto,
+    @Body(ValidationPipe) smsDto: SmsDto,
   ): string {
     console.log('Received request to send SMS', smsDto);
     return 'Thanks!';
