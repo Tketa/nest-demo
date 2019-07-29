@@ -2,11 +2,13 @@ import { Controller, Post, Body, ValidationPipe, Render, Get, UseGuards } from '
 import { SmsDto } from './sms.dto';
 import { SmsMessage } from './sms.entity';
 import { BasicAuthStrategy } from './basic.guard';
+import { PricingService } from './pricing.service';
 
 @Controller('sms')
 export class SmsController {
   private messages: SmsMessage[];
-  constructor() {
+  
+  constructor(private readonly pricingService: PricingService) {
     this.messages = [];
   }
 
@@ -14,8 +16,11 @@ export class SmsController {
   @Render('list')
   @UseGuards(BasicAuthStrategy)
   async list() {
+    const amountSaved = await this.pricingService.getAggregateCost(this.messages.map(message => message.to));
+
     return {
       messages: this.messages,
+      amountSaved: amountSaved.toFixed(2),
     };
   }
 

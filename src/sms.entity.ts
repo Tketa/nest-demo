@@ -3,7 +3,7 @@ export class SmsMessage {
 
     constructor(
         private readonly from: string,
-        private readonly to: string,
+        public readonly to: string,
         private readonly text: string,
     ) {
         this.timestamp = new Date();
