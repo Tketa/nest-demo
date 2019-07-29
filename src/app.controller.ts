@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Post, Body } from '@nestjs/common';
+import { SmsDto } from './sms.dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('/sms/json')
+  sendSms(
+    @Body() smsDto: SmsDto,
+  ): string {
+    console.log('Received request to send SMS', smsDto);
+    return 'Thanks!';
   }
 }
