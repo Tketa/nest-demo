@@ -2,8 +2,14 @@ import { Injectable, HttpService } from '@nestjs/common';
 
 const NEXMO_BASE_URL = 'http://localhost:3001';
 
+export interface IPricingService {
+    getCost(phoneNumber: string): Promise<number>;
+
+    getAggregateCost(phoneNumbers: string[]): Promise<number>;
+}
+
 @Injectable()
-export class PricingService {
+export class PricingService implements IPricingService {
     constructor(private readonly httpClient: HttpService) {}
 
     async getCost(phoneNumber: string): Promise<number> {
