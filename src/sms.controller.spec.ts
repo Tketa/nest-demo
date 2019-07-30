@@ -19,7 +19,7 @@ describe('SmsController', () => {
         const messages = [1, 2, 3].map(() => ({ from: 'Birdie', to: '+447427287918', text: 'Hello World!'}));
         await messages.forEach(async (message) => await smsController.sendSms(message));
 
-        expect(await smsController.getCost()).toEqual(1.5);
+        expect(await smsController.getCost()).toEqual('1.50');
     });
   });
 });
